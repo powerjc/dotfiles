@@ -18,8 +18,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=5000
+HISTFILESIZE=100000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -104,11 +104,12 @@ fi
 
 # some more ls aliases
 alias ll='ls -l'
-alias la='ls -A'
+alias la='ls -la'
 alias l='ls -CF'
 alias em='emacs -nw'
 alias dd='dd status=progress'
 alias _='sudo'
+alias greprc='grep -v '^$\|^\s*\#''
 
 # Alias definitions.
 # You may want to put all your additions into a separate file like
@@ -129,3 +130,4 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+

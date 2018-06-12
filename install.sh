@@ -4,7 +4,6 @@ dotfilelist=(
 	".bashrc" 
 	".bash_aliases" 
 	".bash_exports" 
-	".bash_wrappers" 
 	".screenrc" 
 	".tmux.conf" 
 	".vimrc" 
