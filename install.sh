@@ -1,13 +1,15 @@
 #!/bin/bash
 
-dotfilelist=( 	".bashrc" 
-		".bash_aliases" 
-		".bash_exports" 
-		".bash_wrappers" 
-		".screenrc" 
-		".tmux.conf" 
-		".vimrc" 
-	)
+dotfilelist=( 
+	".bashrc" 
+	".bash_aliases" 
+	".bash_exports" 
+	".bash_wrappers" 
+	".screenrc" 
+	".tmux.conf" 
+	".vimrc" 
+	".nanorc"
+ )
 
 dotfilelink () {
 	echo "$1"
