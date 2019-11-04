@@ -6,8 +6,9 @@ dotfilelist=(
 	".bash_exports" 
 	".screenrc" 
 	".tmux.conf" 
-	".vimrc" 
 	".nanorc"
+	".git-prompt.sh"
+    ".termux"
  )
 
 dotfilelink () {

@@ -59,11 +59,11 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ]; then
-    PS1="\[\033[0;31m\]\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[\[\033[0;31m\]\342\234\227\[\033[0;37m\]]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]root\[\033[01;33m\]@\[\033[01;96m\]\h'; else echo '\[\033[0;39m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h'; fi)\[\033[0;31m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;31m\]]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]\[\e[01;33m\]\\$\[\e[0m\]"
-else
-    PS1='┌──[\u@\h]─[\w]\n└──╼ \$ '
-fi
+#if [ "$color_prompt" = yes ]; then
+#    PS1="\[\033[0;31m\]\342\224\214\342\224\200\$([[ \$? != 0 ]] && echo \"[\[\033[0;31m\]\342\234\227\[\033[0;37m\]]\342\224\200\")[$(if [[ ${EUID} == 0 ]]; then echo '\[\033[01;31m\]root\[\033[01;33m\]@\[\033[01;96m\]\h'; else echo '\[\033[0;39m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h'; fi)\[\033[0;31m\]]\342\224\200[\[\033[0;32m\]\w\[\033[0;31m\]]\n\[\033[0;31m\]\342\224\224\342\224\200\342\224\200\342\225\274 \[\033[0m\]\[\e[01;33m\]\\$\[\e[0m\]"
+#else
+#    PS1='┌──[\u@\h]─[\w]\n└──╼ \$ '
+#fi
 
 # Set 'man' colors
 if [ "$color_prompt" = yes ]; then
@@ -105,7 +105,8 @@ fi
 
 # some more ls aliases
 alias ll='ls -l'
-alias la='ls -la'
+alias la='ls -a'
+alias lla='ls -la'
 alias l='ls -CF'
 alias em='emacs -nw'
 alias dd='dd status=progress'
@@ -132,3 +133,49 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# store colors
+MAGENTA="\[\033[0;35m\]"
+YELLOW="\[\033[01;33m\]"
+BLUE="\[\033[00;34m\]"
+LIGHT_GRAY="\[\033[0;37m\]"
+CYAN="\[\033[0;36m\]"
+GREEN="\[\033[00;32m\]"
+RED="\[\033[0;31m\]"
+VIOLET='\[\033[01;35m\]'
+ 
+function color_my_prompt {
+  local __user_and_host="$GREEN\h" #\u@h is user@host
+  local __cur_location="$BLUE\W"           # capital 'W': current directory, small 'w': full file path
+  local __git_branch_color="$VIOLET"
+  local __prompt_tail="$VIOLET$"
+  local __user_input_color="$GREEN"
+  local __git_branch=$(__git_ps1); 
+  
+  # colour branch name depending on state
+  if [[ "${__git_branch}" =~ "*" ]]; then     # if repository is dirty
+      __git_branch_color="$RED"
+  elif [[ "${__git_branch}" =~ "$" ]]; then   # if there is something stashed
+      __git_branch_color="$YELLOW"
+  elif [[ "${__git_branch}" =~ "%" ]]; then   # if there are only untracked files
+      __git_branch_color="$LIGHT_GRAY"
+  elif [[ "${__git_branch}" =~ "+" ]]; then   # if there are staged files
+      __git_branch_color="$CYAN"
+  fi
+   
+  # Build the PS1 (Prompt String)
+  PS1="$__cur_location$__git_branch_color$__git_branch $__prompt_tail$__user_input_color "
+}
+ 
+# configure PROMPT_COMMAND which is executed each time before PS1
+export PROMPT_COMMAND=color_my_prompt
+ 
+# if .git-prompt.sh exists, set options and execute it
+if [ -f ~/.git-prompt.sh ]; then
+  GIT_PS1_SHOWDIRTYSTATE=true
+  GIT_PS1_SHOWSTASHSTATE=true
+  GIT_PS1_SHOWUNTRACKEDFILES=true
+  GIT_PS1_SHOWUPSTREAM="auto"
+  GIT_PS1_HIDE_IF_PWD_IGNORED=true
+  GIT_PS1_SHOWCOLORHINTS=true
+  . ~/.git-prompt.sh
+fi
