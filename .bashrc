@@ -185,3 +185,6 @@ if [ -f ~/.git-prompt.sh ]; then
   GIT_PS1_SHOWCOLORHINTS=true
   . ~/.git-prompt.sh
 fi
+
+export SCREENDIR=$HOME/.screen
+[ -d $SCREENDIR ] || mkdir -p -m 700 $SCREENDIR
